@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <title>Title</title>
     <script src="asset/js/three.min.js"></script>
-    <script src="asset/js/tween.js"></script>
+    <script src="asset/js/tween.min.js"></script>
     <script>
         var renderer;
         var raycaster = new THREE.Raycaster();
@@ -81,8 +81,8 @@
         function moveCamera(x, y, z) {
             new TWEEN.Tween(camera.position).to({
                 x: x,
-                y: y + 30,
-                z: z + 50
+                y: y + 25,
+                z: z + 45
             },3000).easing(TWEEN.Easing.Elastic.Out).start();
         }
 
@@ -92,9 +92,16 @@
         }
 
         function initPhoto() {
-            initTween(initBox(10, -5, -10,10,'asset/img/juju.png'), 5000);
-            initTween(initBox(-10, 0, -40,10,'asset/img/IMG_1080.JPG'), 3000);
-            initTween(initBox(-5, 20, -30,10,'asset/img/juju2.png'), 4000);
+            initTween(initBox(10, -5, -10,15,'asset/img/juju.png'), 4000);
+            initTween(initBox(-0, 0, -40,15,'asset/img/IMG_1080.JPG'), 6000);
+            initTween(initBox(20, 5, -80,15,'asset/img/juju2.png'), 6000);
+            initTween(initBox(-25, -50, -110,15,'asset/img/juju3.png'), 8000);
+            initTween(initBox(-50, -60, -90,15,'asset/img/juju8.png'), 8000);
+            initTween(initBox(-25, -30, -10,15,'asset/img/juju5.png'), 5000);
+            initTween(initBox(-20, 5, -50,15,'asset/img/juju6.png'), 8000);
+            initTween(initBox(-50, -50, -150,15,'asset/img/juju7.png'), 8000);
+            initTween(initBox(30, -70, -200,15,'asset/img/juju9.png'), 8000);
+            initTween(initBox(-50, -200, -250,15,'asset/img/juju10.png'), 8000);
         }
 
         function startThree() {
