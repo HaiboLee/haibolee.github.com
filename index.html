@@ -75,6 +75,8 @@
             if (intersects.length > 0) {
                 SELECTED = intersects[0].object;
                 moveCamera(SELECTED.position.x, SELECTED.position.y, SELECTED.position.z);
+            }else{
+                moveCamera(0,50,80);
             }
         }
 
