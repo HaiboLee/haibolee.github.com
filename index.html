@@ -91,9 +91,12 @@
         function initLight() {
             var light = new THREE.AmbientLight(0xffffff);
             scene.add(light);
-            var spotLight  = new THREE.SpotLight(0x0000ff,0.3);
-            spotLight.position.set(-200,150,-50);
-            scene.add(spotLight)
+            var spotLight  = new THREE.PointLight(0x0000ff,0.5);
+            spotLight.position.set(200,150,-50);
+            var lightHelper=new THREE.PointLightHelper(spotLight,0.5);
+            scene.add(lightHelper);
+            scene.add(spotLight);
+            new TWEEN.Tween(spotLight.position).to({x:-80,y:-50,z:50},5000).repeat(Infinity).start();
         }
 
         function initPhoto() {
