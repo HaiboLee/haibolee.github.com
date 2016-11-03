@@ -3,6 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <title>居居的个人相册</title>
+    <style>
+        body{margin:0}
+    </style>
     <script src="asset/js/three.min.js"></script>
     <script src="asset/js/tween.js"></script>
     <script>
@@ -15,7 +18,8 @@
         var objects = [];
         function initThree() {
             renderer = new THREE.WebGLRenderer({antialias: true});
-            renderer.setClearColor(0xffffff);
+            renderer.setClearColor(0xffffff,1);
+            //renderer.texture
             renderer.setSize(window.innerWidth, window.innerHeight);
             document.getElementById("myGame").appendChild(renderer.domElement);
         }
@@ -39,6 +43,20 @@
         var scene;
         function initScene() {
             scene = new THREE.Scene();
+            scene.fog = new THREE.FogExp2('0xffffff',0.003);
+        }
+
+        function initBg(){
+            var bg = new THREE.PlaneGeometry(800,800);
+            var bgm = new THREE.ImageUtils.loadTexture('asset/img/bg.jpg');
+            var mbg = new THREE.MeshPhongMaterial();
+            mbg.map = bgm;
+            var plane = new THREE.Mesh(bg,mbg);
+            plane.rotation.x= -.178 * Math.PI;
+            plane.position.x = 0;
+            plane.position.y = -10;
+            plane.position.z =-250;
+            scene.add(plane);
         }
 
 
@@ -91,12 +109,12 @@
         function initLight() {
             var light = new THREE.AmbientLight(0xffffff);
             scene.add(light);
-            var spotLight  = new THREE.PointLight(0x0000ff,0.5);
-            spotLight.position.set(200,150,-50);
-            var lightHelper=new THREE.PointLightHelper(spotLight,0.5);
-            scene.add(lightHelper);
-            scene.add(spotLight);
-            new TWEEN.Tween(spotLight.position).to({x:-80,y:-50,z:50},5000).repeat(Infinity).start();
+//            var spotLight  = new THREE.PointLight(0x0000ff,0.5);
+//            spotLight.position.set(200,150,-50);
+//            var lightHelper=new THREE.PointLightHelper(spotLight,0.5);
+//            scene.add(lightHelper);
+//            scene.add(spotLight);
+//            new TWEEN.Tween(spotLight.position).to({x:-80,y:-50,z:50},5000).repeat(Infinity).start();
         }
 
         function initPhoto() {
@@ -116,6 +134,7 @@
             initThree();
             initScene();
             initCamera();
+            initBg();
             initPhoto();
             initLight();
             animation();
