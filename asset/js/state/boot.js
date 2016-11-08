@@ -5,19 +5,49 @@ class MyShow {
 
     showEmitter(x, y) {
         var lz = ['box1'];
-        let em = game.add.emitter(x, y, 20);
-        em.makeParticles('box1');
+        let em = game.add.emitter(x, y, 40);
+        //em.makeParticles(lz);
         em.setXSpeed(-20, 20);
         em.setYSpeed(-20, 20);
         em.setScale(0.2, 0.5, 0.2, 0.5, 1000);
         em.gravity = 0;
         //em.setAlpha(1,0.1,5000);
-        em.setRotation()
+        //em.setRotation()
         return em;
     }
 
     addSprite(x, y) {
-        return game.add.sprite(x, y, 'box1')
+        return game.add.sprite(x, y, 'box')
+    }
+
+    addGroup() {
+        let myGroup = game.add.group();
+        myGroup.enableBody = true;
+        myGroup.createMultiple(5, 'bs');
+        myGroup.setAll('outOfBoundsKill', true);
+        myGroup.setAll('checkWorldBounds', true);
+        game.time.events.loop(Phaser.Timer.SECOND * 2, function () {
+            let e = myGroup.getFirstExists(false);
+            if (e) {
+                e.reset(game.rnd.integerInRange(100, 600), 100);
+                e.life = 2;
+                e.body.velocity.y = 100;
+            }
+        }, this);
+        return myGroup;
+
+    }
+
+    boom(emts, group, bullets) {
+        bullets.fire();
+        game.physics.arcade.overlap(group, bullets, function (a, b) {
+            emts.x = a.x;
+            emts.y = a.y;
+            emts.makeParticles('chunk');
+            emts.flow(1500, 250, 40, 1, true);
+            a.kill();
+            b.kill();
+        }, null, this);
     }
 }
 
@@ -25,7 +55,6 @@ class MyPlane {
 
     constructor(game) {
         this.game = game;
-        var bulletTime = 0;
     }
 
     addPlane(x, y) {
@@ -34,30 +63,19 @@ class MyPlane {
         return plane;
     }
 
-    addWeapon(sprite) {
+    addWeapon(sprite, x, y) {
         let weapon = game.add.weapon(30, 'bomb');
-        weapon.addBulletAnimation('fly',[0,1,2,3],12,true);
+        weapon.addBulletAnimation('fly', [0, 1, 2, 3], 12, true);
         weapon.bulletKillType = Phaser.Weapon.KILL_WORLD_BOUNDS;
-        weapon.bulletSpeed = 600;
+        weapon.bulletSpeed = 500;
+        //weapon.bulletSpeedVariance = 50;
+        weapon.bulletRotateToVelocity = true;
+        weapon.shots = 10;
         weapon.fireRate = 500;
-        weapon.trackSprite(sprite,0,0,true);
+        //weapon.bulletAngleVariance = 20;
+        weapon.trackSprite(sprite, x, y, true);
         return weapon;
     }
 
-    bulletTime() {
-        let bulletTime = 0;
-        return bulletTime;
-    }
 
-    startFire(sprite, mybullets) {
-        console.log(game.time.now % 20);
-        if (game.time.now % 20 == 0) {
-            let bullet = mybullets.getFirstExists(false);
-            if (bullet) {
-                bullet.reset(sprite.x + 6, sprite.y - 8);
-                bullet.body.gravity.y = -300;
-                //    bulletTime = game.time.now + 150;
-            }
-        }
-    }
 }
