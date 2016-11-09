@@ -34,13 +34,14 @@ class MyShow {
                 e.body.velocity.y = 100;
             }
         }, this);
+        game.physics.arcade.enable(myGroup);
         return myGroup;
 
     }
 
     boom(emts, group, bullets) {
         bullets.fire();
-        game.physics.arcade.overlap(group, bullets, function (a, b) {
+        game.physics.arcade.overlap(group, bullets.bullets, function (a, b) {
             emts.x = a.x;
             emts.y = a.y;
             emts.makeParticles('chunk');
@@ -60,6 +61,11 @@ class MyPlane {
     addPlane(x, y) {
         let plane = game.add.sprite(x, y, 'plane');
         plane.scale.setTo(0.2);
+        plane.anchor.setTo(0.5, 0.5);
+        plane.inputEnabled = true;
+        plane.input.enableDrag(false);
+        plane.rotation = -0.5 * Math.PI;
+        game.physics.arcade.enable(plane);
         return plane;
     }
 

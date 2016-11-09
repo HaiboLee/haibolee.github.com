@@ -6,11 +6,13 @@
     <script src="asset/js/lib/phaser.js"></script>
     <script src="asset/js/state/play.js"></script>
     <script src="asset/js/state/boot.js"></script>
+    <script src="asset/js/state/content.js"></script>
+    <!--<script src="asset/js/util/websocket.js"></script>-->
     <script>
         var game = new Phaser.Game(800, 600, Phaser.AUTO, 'container');
-        //game.state.add('load', loadState);
+        game.state.add('content', contentState);
         game.state.add('play', playState);
-        game.state.start('play');
+        game.state.start('content');
     </script>
 </head>
 <body>

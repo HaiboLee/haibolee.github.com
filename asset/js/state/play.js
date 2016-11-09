@@ -1,62 +1,78 @@
 function playState(game) {
-    let webspone, webspone2, webspone3;
+    let webspone1, webspone2;
     let myplane;
-    let plane;
+    let plane1;
+    let plane2;
     let cursors;
-    let allBullets;
     let my;
     let emt;
     let myGroup;
+    let flag;
+    let num;
+    let websocket;
     this.init = function () {
-
-    }
-    this.preload = function () {
-        game.load.image('box1', 'asset/img/box1.png');
-        game.load.image('box', 'asset/img/box.png');
-        game.load.image('plane', 'asset/img/plane.png');
-        game.load.image('chunk', 'asset/img/chunk.png');
-        game.load.spritesheet('bomb', 'asset/img/xenon2_bomb.png', 16, 8, 4);
-        game.load.image('bs', 'asset/img/bsquadron3.png');
-    }
-    this.create = function () {
         my = new MyShow(game);
         myplane = new MyPlane(game);
-        emt = my.showEmitter(500, 500);
-        plane = myplane.addPlane(100, 500);
-        plane.anchor.setTo(0.5, 0.5);
+        //ws = new WebSocketUtil();
+    }
+    this.preload = function () {
+
+    }
+    this.create = function () {
+
+        emt = my.showEmitter(500, 500); //爆炸效果
+        plane1 = myplane.addPlane(200, 500);
+        plane2 = myplane.addPlane(400, 500);
         myGroup = my.addGroup();
-        game.physics.arcade.enable([plane, myGroup]);
-        plane.inputEnabled = true;
-        plane.input.enableDrag(false);
 
-        plane.rotation = -0.5 * Math.PI;
-
-        webspone = myplane.addWeapon(plane, 0, 0);
-        webspone2 = myplane.addWeapon(plane, 0, -20);
-        webspone3 = myplane.addWeapon(plane, 0, 20);
-
+        webspone1 = myplane.addWeapon(plane1, 0, 0);
+        webspone2 = myplane.addWeapon(plane2, 0, 0);
 
         game.input.onDown.add(function () {
-            console.log(webspone3.shots);
+            //console.log(webspone3.shots);
+            //websocket.send(flag + ":" + "left");
         });
-
-        allBullets = webspone.bullets;//获取子弹的组
         cursors = this.input.keyboard.createCursorKeys();
+
+        websocket = new WebSocket('ws://localhost:8080/websocket/websocket');
+        websocket.onopen = function () {
+            console.log("连接成功");
+        }
+
+        websocket.onmessage = function (event) {
+            console.log(event.data);
+            let datas = event.data.split(':');
+            if (datas[0] == 'start') {
+                flag = datas[1];
+                num = datas[2];
+            }
+            else if (datas[0] == 'turn') {
+                if (datas[1] == 'plane1') {
+                    if (datas[2] == 'left') {
+                        plane1.position.x--;
+                    } else {
+                        plane1.position.x++;
+                    }
+                } else if (datas[1] == 'plane2') {
+                    if (datas[2] == 'left') {
+                        plane2.position.x--;
+                    } else {
+                        plane2.position.x++;
+                    }
+                }
+            }
+        }
     }
 
     this.update = function () {
-        my.boom(emt, myGroup, webspone);
+        my.boom(emt, myGroup, webspone1);
         my.boom(emt, myGroup, webspone2);
-        if(webspone3.shots<20){
-            my.boom(emt, myGroup, webspone3);
-        }
         if (cursors.right.isDown) {
-            plane.position.x += 10;
+            websocket.send("turn:" + flag + ":" + num + ":right");
         } else if (cursors.left.isDown) {
-            plane.position.x -= 10;
-        } else {
-            plane.body.angularVelocity = 0;
+            websocket.send("turn:" + flag + ":" + num + ":left");
         }
     }
+
 
 }
