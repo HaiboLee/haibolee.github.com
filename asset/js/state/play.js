@@ -48,19 +48,16 @@ function playState(game) {
             }
             else if (datas[0] == 'turn') {
                 if (datas[1] == 'plane1') {
-                    if (datas[2] == 'left') {
-                        plane1.position.x--;
-                    } else {
-                        plane1.position.x++;
-                    }
+                        plane1.x = parseInt(datas[2]);
                 } else if (datas[1] == 'plane2') {
-                    if (datas[2] == 'left') {
-                        plane2.position.x--;
-                    } else {
-                        plane2.position.x++;
-                    }
+                        plane2.x = parseInt(datas[2]);
                 }
             }
+        }
+
+        websocket.onclose = function () {
+            console.log(flag+":"+num +":当前连接关闭")
+            websocket.send(flag+":"+num +":当前连接关闭");
         }
     }
 
@@ -68,9 +65,17 @@ function playState(game) {
         my.boom(emt, myGroup, webspone1);
         my.boom(emt, myGroup, webspone2);
         if (cursors.right.isDown) {
-            websocket.send("turn:" + flag + ":" + num + ":right");
+            if(num == '1'){
+                websocket.send("turn:" + flag + ":" + num + ":" +　"right:" + plane1.x);
+            }else if(num == '2'){
+                websocket.send("turn:" + flag + ":" + num + ":" +　"right:" + plane2.x);
+            }
         } else if (cursors.left.isDown) {
-            websocket.send("turn:" + flag + ":" + num + ":left");
+            if(num == '1'){
+                websocket.send("turn:" + flag + ":" + num + ":" + "left:" + plane1.x);
+            }else if(num == '2'){
+                websocket.send("turn:" + flag + ":" + num + ":" + "left:" + plane2.x);
+            }
         }
     }
 
