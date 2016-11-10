@@ -1,8 +1,6 @@
 function playState(game) {
     let webspone1, webspone2;
     let myplane;
-    let plane1;
-    let plane2;
     let cursors;
     let my;
     let emt;
@@ -10,6 +8,8 @@ function playState(game) {
     let flag;
     let num;
     let websocket;
+    let planeArrays = {};
+    let websponeArrays = {};
     this.init = function () {
         my = new MyShow(game);
         myplane = new MyPlane(game);
@@ -21,12 +21,7 @@ function playState(game) {
     this.create = function () {
 
         emt = my.showEmitter(500, 500); //爆炸效果
-        plane1 = myplane.addPlane(200, 500);
-        plane2 = myplane.addPlane(400, 500);
         myGroup = my.addGroup();
-
-        webspone1 = myplane.addWeapon(plane1, 0, 0);
-        webspone2 = myplane.addWeapon(plane2, 0, 0);
 
         game.input.onDown.add(function () {
             //console.log(webspone3.shots);
@@ -45,38 +40,61 @@ function playState(game) {
             if (datas[0] == 'start') {
                 flag = datas[1];
                 num = datas[2];
+                let oldPlane = datas[3].split(',');
+                for (let i = 0; i < oldPlane.length-1; i++) {
+                    planeArrays[parseInt(oldPlane[i])] = myplane.addPlane(parseInt(oldPlane[i]) * 100 +100,500);
+                    websponeArrays[oldPlane[i]] = myplane.addWeapon(planeArrays[parseInt(oldPlane[i])], 0, 0);
+                }
+                console.log(oldPlane);
             }
             else if (datas[0] == 'turn') {
-                if (datas[1] == 'plane1') {
-                        plane1.x = parseInt(datas[2]);
-                } else if (datas[1] == 'plane2') {
-                        plane2.x = parseInt(datas[2]);
-                }
+                    planeArrays[parseInt(datas[1])].x = parseInt(datas[2]);
+            }
+            else if (datas[0] == 'join') {
+                planeArrays[parseInt(datas[1])] = myplane.addPlane(parseInt(datas[1]) * 100 + 100, 500);
+                websponeArrays[parseInt(datas[1])] = myplane.addWeapon(planeArrays[parseInt(datas[1])], 0, 0);
+            }
+            else if(datas[0] == 'leave'){
+                planeArrays[parseInt(datas[1])].kill();
+                websponeArrays[parseInt(datas[1])] = null;
+                planeArrays[parseInt(datas[1])] = null;
             }
         }
 
         websocket.onclose = function () {
-            console.log(flag+":"+num +":当前连接关闭")
-            websocket.send(flag+":"+num +":当前连接关闭");
+            console.log(flag + ":" + num + ":当前连接关闭")
+            websocket.send(flag + ":" + num + ":当前连接关闭");
+        }
+
+        window.onbeforeunload = function () {
+            websocket.send('close:' + flag + ':' + num);
+            console.log('关闭窗口');
         }
     }
 
     this.update = function () {
-        my.boom(emt, myGroup, webspone1);
-        my.boom(emt, myGroup, webspone2);
-        if (cursors.right.isDown) {
-            if(num == '1'){
-                websocket.send("turn:" + flag + ":" + num + ":" +　"right:" + plane1.x);
-            }else if(num == '2'){
-                websocket.send("turn:" + flag + ":" + num + ":" +　"right:" + plane2.x);
-            }
-        } else if (cursors.left.isDown) {
-            if(num == '1'){
-                websocket.send("turn:" + flag + ":" + num + ":" + "left:" + plane1.x);
-            }else if(num == '2'){
-                websocket.send("turn:" + flag + ":" + num + ":" + "left:" + plane2.x);
+        for(let i = 0;i<getLength(websponeArrays);i++){
+            if(websponeArrays[i]!=null){
+                my.boom(emt,myGroup,websponeArrays[i]);
             }
         }
+        if (cursors.right.isDown) {
+                sendMessage("turn:" + flag + ":" + num + ":" + "right:" + planeArrays[parseInt(num)].x);
+        } else if (cursors.left.isDown) {
+                sendMessage("turn:" + flag + ":" + num + ":" + "left:" + planeArrays[parseInt(num)].x);
+        }
+    }
+
+    function sendMessage(message) {
+        websocket.send(message);
+    }
+
+    function getLength(json){
+        let i=0;
+        for (let item in json ){
+            i++;
+        }
+        return i;
     }
 
 
