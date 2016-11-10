@@ -26,16 +26,25 @@ class MyShow {
         myGroup.createMultiple(5, 'bs');
         myGroup.setAll('outOfBoundsKill', true);
         myGroup.setAll('checkWorldBounds', true);
-        game.time.events.loop(Phaser.Timer.SECOND * 2, function () {
-            let e = myGroup.getFirstExists(false);
-            if (e) {
-                e.reset(game.rnd.integerInRange(100, 600), 100);
-                e.life = 2;
-                e.body.velocity.y = 100;
-            }
-        }, this);
+        //game.time.events.loop(Phaser.Timer.SECOND * 2, function () {
+        //    let e = myGroup.getFirstExists(false);
+        //    if (e) {
+        //        e.reset(game.rnd.integerInRange(10, game.width), 100);
+        //        //e.life = 5;
+        //        e.body.velocity.y = 100;
+        //    }
+        //}, this);
         game.physics.arcade.enable(myGroup);
         return myGroup;
+
+    }
+
+    createEnemy(group,x){
+        let e = group.getFirstExists(false);
+        if (e){
+            e.reset(x, 50);
+            e.body.velocity.y=150;
+        }
 
     }
 

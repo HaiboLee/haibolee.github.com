@@ -28,7 +28,7 @@ function playState(game) {
     this.create = function () {
 
         emt = my.showEmitter(500, 500); //爆炸效果
-        myGroup = my.addGroup();
+        myGroup = my.addGroup();//敌人组
 
         game.input.onDown.add(function () {
         });
@@ -52,17 +52,20 @@ function playState(game) {
                 }
                 console.log(oldPlane);
             }
-            else if (datas[0] == 'turn') {
+            else if (datas[0] == 'turn') {//转向
                     planeArrays[parseInt(datas[1])].x = parseInt(datas[2]);
             }
-            else if (datas[0] == 'join') {
+            else if (datas[0] == 'join') {//玩家加入
                 planeArrays[parseInt(datas[1])] = myplane.addPlane(parseInt(datas[1]) * 100 + 100, 500);
                 websponeArrays[parseInt(datas[1])] = myplane.addWeapon(planeArrays[parseInt(datas[1])], 0, 0);
             }
-            else if(datas[0] == 'leave'){
+            else if(datas[0] == 'leave'){//玩家离开
                 planeArrays[parseInt(datas[1])].kill();
                 websponeArrays[parseInt(datas[1])] = null;
                 planeArrays[parseInt(datas[1])] = null;
+            }
+            else if(datas[0] == 'enemy'){//产生敌人
+                my.createEnemy(myGroup,parseInt(datas[1]));
             }
         }
 
