@@ -1,5 +1,4 @@
 function playState(game) {
-    let webspone1, webspone2;
     let myplane;
     let cursors;
     let my;
@@ -10,10 +9,18 @@ function playState(game) {
     let websocket;
     let planeArrays = {};
     let websponeArrays = {};
+    let stats;
     this.init = function () {
         my = new MyShow(game);
         myplane = new MyPlane(game);
-        //ws = new WebSocketUtil();
+        game.stage.disableVisibilityChange = true;
+
+        stats = new Stats();
+        stats.setMode(0); // 0: fps, 1: ms
+        stats.domElement.style.position = 'absolute';
+        stats.domElement.style.left = '0px';
+        stats.domElement.style.top = '0px';
+        document.body.appendChild(stats.domElement);
     }
     this.preload = function () {
 
@@ -24,8 +31,6 @@ function playState(game) {
         myGroup = my.addGroup();
 
         game.input.onDown.add(function () {
-            //console.log(webspone3.shots);
-            //websocket.send(flag + ":" + "left");
         });
         cursors = this.input.keyboard.createCursorKeys();
 
@@ -62,8 +67,8 @@ function playState(game) {
         }
 
         websocket.onclose = function () {
-            console.log(flag + ":" + num + ":当前连接关闭")
-            websocket.send(flag + ":" + num + ":当前连接关闭");
+            //console.log(flag + ":" + num + ":当前连接关闭")
+            //websocket.send(flag + ":" + num + ":当前连接关闭");
         }
 
         window.onbeforeunload = function () {
@@ -83,6 +88,7 @@ function playState(game) {
         } else if (cursors.left.isDown) {
                 sendMessage("turn:" + flag + ":" + num + ":" + "left:" + planeArrays[parseInt(num)].x);
         }
+        stats.update();
     }
 
     function sendMessage(message) {
