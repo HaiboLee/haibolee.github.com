@@ -27,6 +27,21 @@ function playState(game) {
     }
     this.create = function () {
 
+        let camera = game.camera;
+
+        //背景
+        game.add.image(0,0,'bg');
+        let ball = game.add.image(game.width,game.height,'ball');
+        ball.anchor.setTo(0.5);
+       //ball.scale.setTo(0.8);
+        game.add.tween(ball).to({x:0,y:0},30000,null,true,0,Number.MAX_VALUE,true);
+        game.add.tween(ball.scale).to({x:0.1,y:0.1},30000,null,true,0,Number.MAX_VALUE,true);
+
+        window.setInterval(function () {
+            console.log("斗");
+            camera.shake(0.005, 500, false, Phaser.Camera.SHAKE_BOTH, true);
+        },60000);
+
         emt = my.showEmitter(500, 500); //爆炸效果
         myGroup = my.addGroup();//敌人组
 
@@ -40,7 +55,7 @@ function playState(game) {
         }
 
         websocket.onmessage = function (event) {
-            console.log(event.data);
+            //console.log(event.data);
             let datas = event.data.split(':');
             if (datas[0] == 'start') {
                 flag = datas[1];

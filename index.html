@@ -3,6 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <title>plane</title>
+    <style>
+        body {
+            margin: auto;
+        }
+    </style>
     <script src="asset/js/lib/phaser.js"></script>
     <script src="asset/js/lib/stats.min.js"></script>
     <script src="asset/js/util/init.js"></script>
@@ -11,13 +16,13 @@
     <script src="asset/js/state/content.js"></script>
     <!--<script src="asset/js/util/websocket.js"></script>-->
     <script>
-        var game = new Phaser.Game(800, 600, Phaser.AUTO, 'container');
+        var game = new Phaser.Game(1000, 600, Phaser.AUTO, 'container');
         game.state.add('content', contentState);
         game.state.add('play', playState);
         game.state.start('content');
     </script>
 </head>
 <body>
-<div id="container"></div>
+<div style="background-color: dimgray" id="container"></div>
 </body>
 </html>

@@ -1,7 +1,8 @@
 function contentState(game) {
 
     this.init = function () {
-
+        game.scale.pageAlignHorizontally = true;
+        game.scale.pageAlignVertically = true;
     }
 
     this.preload = function () {
@@ -11,6 +12,9 @@ function contentState(game) {
         game.load.image('chunk', 'asset/img/chunk.png');
         game.load.spritesheet('bomb', 'asset/img/xenon2_bomb.png', 16, 8, 4);
         game.load.image('bs', 'asset/img/bsquadron3.png');
+        game.load.image('bg','asset/img/bg.png');
+        game.load.image('ball','asset/img/ball.png');
+
     }
 
     this.create = function () {
