@@ -10,6 +10,7 @@ function playState(game) {
     let planeArrays = {};
     let websponeArrays = {};
     let stats;
+    let camera;
     this.init = function () {
         my = new MyShow(game);
         myplane = new MyPlane(game);
@@ -27,7 +28,7 @@ function playState(game) {
     }
     this.create = function () {
 
-        let camera = game.camera;
+        camera = game.camera;
 
         //背景
         game.add.image(0,0,'bg');
@@ -39,7 +40,7 @@ function playState(game) {
 
         window.setInterval(function () {
             console.log("斗");
-            camera.shake(0.005, 500, false, Phaser.Camera.SHAKE_BOTH, true);
+            //camera.shake(0.005, 500, false, Phaser.Camera.SHAKE_BOTH, true);
         },60000);
 
         emt = my.showEmitter(500, 500); //爆炸效果
@@ -57,7 +58,7 @@ function playState(game) {
         websocket.onmessage = function (event) {
             //console.log(event.data);
             let datas = event.data.split(':');
-            if (datas[0] == 'start') {
+            if (datas[0] == 's') {
                 flag = datas[1];
                 num = datas[2];
                 let oldPlane = datas[3].split(',');
@@ -67,19 +68,19 @@ function playState(game) {
                 }
                 console.log(oldPlane);
             }
-            else if (datas[0] == 'turn') {//转向
+            else if (datas[0] == 't') {//转向
                     planeArrays[parseInt(datas[1])].x = parseInt(datas[2]);
             }
-            else if (datas[0] == 'join') {//玩家加入
+            else if (datas[0] == 'j') {//玩家加入
                 planeArrays[parseInt(datas[1])] = myplane.addPlane(parseInt(datas[1]) * 100 + 100, 500);
                 websponeArrays[parseInt(datas[1])] = myplane.addWeapon(planeArrays[parseInt(datas[1])], 0, 0);
             }
-            else if(datas[0] == 'leave'){//玩家离开
+            else if(datas[0] == 'l'){//玩家离开
                 planeArrays[parseInt(datas[1])].kill();
                 websponeArrays[parseInt(datas[1])] = null;
                 planeArrays[parseInt(datas[1])] = null;
             }
-            else if(datas[0] == 'enemy'){//产生敌人
+            else if(datas[0] == 'e'){//产生敌人
                 my.createEnemy(myGroup,parseInt(datas[1]));
             }
         }
@@ -90,7 +91,7 @@ function playState(game) {
         }
 
         window.onbeforeunload = function () {
-            websocket.send('close:' + flag + ':' + num);
+            websocket.send('c:' + flag + ':' + num);
             console.log('关闭窗口');
         }
     }
@@ -98,13 +99,13 @@ function playState(game) {
     this.update = function () {
         for(let i = 0;i<getLength(websponeArrays);i++){
             if(websponeArrays[i]!=null){
-                my.boom(emt,myGroup,websponeArrays[i]);
+                my.boom(emt,myGroup,websponeArrays[i],camera);
             }
         }
         if (cursors.right.isDown) {
-                sendMessage("turn:" + flag + ":" + num + ":" + "right:" + planeArrays[parseInt(num)].x);
+                sendMessage("t:" + flag + ":" + num + ":" + "r:" + planeArrays[parseInt(num)].x);
         } else if (cursors.left.isDown) {
-                sendMessage("turn:" + flag + ":" + num + ":" + "left:" + planeArrays[parseInt(num)].x);
+                sendMessage("t:" + flag + ":" + num + ":" + "l:" + planeArrays[parseInt(num)].x);
         }
         stats.update();
     }
@@ -120,6 +121,4 @@ function playState(game) {
         }
         return i;
     }
-
-
 }

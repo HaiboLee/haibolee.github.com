@@ -21,19 +21,20 @@ class MyShow {
     }
 
     addGroup() {
+        game.stage.disableVisibilityChange = true;
         let myGroup = game.add.group();
         myGroup.enableBody = true;
-        myGroup.createMultiple(5, 'bs');
+        myGroup.createMultiple(20, 'bs');
         myGroup.setAll('outOfBoundsKill', true);
         myGroup.setAll('checkWorldBounds', true);
-        //game.time.events.loop(Phaser.Timer.SECOND * 2, function () {
-        //    let e = myGroup.getFirstExists(false);
-        //    if (e) {
-        //        e.reset(game.rnd.integerInRange(10, game.width), 100);
-        //        //e.life = 5;
-        //        e.body.velocity.y = 100;
-        //    }
-        //}, this);
+        window.setInterval(function () {
+            let e = myGroup.getFirstExists(false);
+            if (e) {
+                e.reset(game.rnd.integerInRange(10, game.width), 100);
+                //e.life = 5;
+                e.body.velocity.y = 100;
+            }
+        }, 500);
         game.physics.arcade.enable(myGroup);
         return myGroup;
 
@@ -48,15 +49,16 @@ class MyShow {
 
     }
 
-    boom(emts, group, bullets) {
+    boom(emts, group, bullets,camera) {
         bullets.fire();
         game.physics.arcade.overlap(group, bullets.bullets, function (a, b) {
             emts.x = a.x;
             emts.y = a.y;
-            emts.makeParticles('chunk');
+            emts.makeParticles('box1');
             emts.flow(1500, 250, 40, 1, true);
             a.kill();
             b.kill();
+            camera.shake(0.001, 500, false, Phaser.Camera.SHAKE_BOTH, true);
         }, null, this);
     }
 }

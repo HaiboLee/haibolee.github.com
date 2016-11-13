@@ -7,19 +7,22 @@
         body {
             margin: auto;
         }
+        div,html,body{height:100%;overflow:hidden;}
     </style>
     <script src="asset/js/lib/phaser.js"></script>
     <script src="asset/js/lib/stats.min.js"></script>
     <script src="asset/js/util/init.js"></script>
     <script src="asset/js/state/play.js"></script>
     <script src="asset/js/state/boot.js"></script>
-    <script src="asset/js/state/content.js"></script>
+    <script src="asset/js/state/load.js"></script>
+    <script src="asset/js/state/begin.js"></script>
     <!--<script src="asset/js/util/websocket.js"></script>-->
     <script>
-        var game = new Phaser.Game(1000, 600, Phaser.AUTO, 'container');
-        game.state.add('content', contentState);
+        var game = new Phaser.Game(1000, 800, Phaser.AUTO, 'container');
+        game.state.add('load', loadState);
         game.state.add('play', playState);
-        game.state.start('content');
+        game.state.add('begin', beginState);
+        game.state.start('begin');
     </script>
 </head>
 <body>
