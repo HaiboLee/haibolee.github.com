@@ -28,6 +28,11 @@ function playState(game) {
     }
     this.create = function () {
 
+        console.log(game.stage)
+
+        //var worker = new Worker("asset/js/util/worker.js");
+        //worker.postMessage(game);
+
         camera = game.camera;
 
         //背景
@@ -39,12 +44,11 @@ function playState(game) {
         game.add.tween(ball.scale).to({x:0.1,y:0.1},30000,null,true,0,Number.MAX_VALUE,true);
 
         window.setInterval(function () {
-            console.log("斗");
             //camera.shake(0.005, 500, false, Phaser.Camera.SHAKE_BOTH, true);
         },60000);
 
         emt = my.showEmitter(500, 500); //爆炸效果
-        myGroup = my.addGroup();//敌人组
+        //myGroup = my.addGroup();//敌人组
 
         game.input.onDown.add(function () {
         });

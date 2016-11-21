@@ -11,7 +11,7 @@ function loadState(game) {
 
         let preload = game.add.sprite(game.width/2,game.height/2,'preload');
         preload.anchor.setTo(0.5);
-       nnn =  game.load.setPreloadSprite(preload);
+        nnn =  game.load.setPreloadSprite(preload);
 
         game.load.image('box1', 'asset/img/box1.png');
         game.load.image('box', 'asset/img/box.png');
@@ -30,6 +30,5 @@ function loadState(game) {
     }
 
     this.update = function () {
-        console.log(nnn);
     }
 }
