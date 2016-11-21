@@ -28,11 +28,19 @@ function playState(game) {
     }
     this.create = function () {
 
-        console.log(game.stage)
 
         //var worker = new Worker("asset/js/util/worker.js");
         //worker.postMessage(game);
+        var state = game.state;
 
+        state.onPausedCallback = function () {
+            var nowstate = stage.getCurrentState();
+            console.log(nowstate);
+        }
+
+        game.input.onDown.add(function () {
+            console.log(state)
+        });
         camera = game.camera;
 
         //背景
@@ -48,7 +56,7 @@ function playState(game) {
         },60000);
 
         emt = my.showEmitter(500, 500); //爆炸效果
-        //myGroup = my.addGroup();//敌人组
+        myGroup = my.addGroup();//敌人组
 
         game.input.onDown.add(function () {
         });
