@@ -4,15 +4,15 @@ class MyShow {
     }
 
     showEmitter(x, y) {
-        var lz = ['box1'];
-        let em = game.add.emitter(x, y, 40);
-        //em.makeParticles(lz);
-        em.setXSpeed(-20, 20);
-        em.setYSpeed(-20, 20);
+        var lz = ['orb1','orb2','orb3'];
+        let em = game.add.emitter(x, y, 50);
+        em.makeParticles(lz);
+        em.setXSpeed(-25, 25);
+        em.setYSpeed(-25, 25);
         em.setScale(0.2, 0.5, 0.2, 0.5, 1000);
         em.gravity = 0;
         //em.setAlpha(1,0.1,5000);
-        //em.setRotation()
+        em.setRotation(Math.floor(Math.random()*200)+200,Math.floor(Math.random()*200)+200);
         return em;
     }
 
@@ -21,20 +21,19 @@ class MyShow {
     }
 
     addGroup() {
-        //game.stage.disableVisibilityChange = true;
         let myGroup = game.add.group();
         myGroup.enableBody = true;
         myGroup.createMultiple(20, 'bs');
         myGroup.setAll('outOfBoundsKill', true);
         myGroup.setAll('checkWorldBounds', true);
-        //window.setInterval(function () {
-        //    let e = myGroup.getFirstExists(false);
-        //    if (e) {
-        //        e.reset(game.rnd.integerInRange(10, game.width), 100);
-        //        //e.life = 5;
-        //        e.body.velocity.y = 100;
-        //    }
-        //}, 500);
+        window.setInterval(function () {
+            let e = myGroup.getFirstExists(false);
+            if (e) {
+                e.reset(game.rnd.integerInRange(10, game.width), 100);
+                //e.life = 5;
+                e.body.velocity.y = 100;
+            }
+        }, 500);
         game.physics.arcade.enable(myGroup);
         return myGroup;
 
@@ -54,8 +53,8 @@ class MyShow {
         game.physics.arcade.overlap(group, bullets.bullets, function (a, b) {
             emts.x = a.x;
             emts.y = a.y;
-            emts.makeParticles('box1');
-            emts.flow(1500, 250, 40, 1, true);
+            //emts.makeParticles('box1');
+            emts.flow(1500, 250, 10, 1, true);
             a.kill();
             b.kill();
             camera.shake(0.001, 500, false, Phaser.Camera.SHAKE_BOTH, true);
@@ -70,8 +69,8 @@ class MyPlane {
     }
 
     addPlane(x, y) {
-        let plane = game.add.sprite(x, y, 'plane');
-        plane.scale.setTo(0.2);
+        let plane = game.add.sprite(x, y, 'plane2');
+        //plane.scale.setTo(0.2);
         plane.anchor.setTo(0.5, 0.5);
         plane.inputEnabled = true;
         plane.input.enableDrag(false);
@@ -81,8 +80,8 @@ class MyPlane {
     }
 
     addWeapon(sprite, x, y) {
-        let weapon = game.add.weapon(30, 'bomb');
-        weapon.addBulletAnimation('fly', [0, 1, 2, 3], 12, true);
+        let weapon = game.add.weapon(30, 'chunk');
+       // weapon.addBulletAnimation('fly', [0, 1, 2, 3], 12, true);
         weapon.bulletKillType = Phaser.Weapon.KILL_WORLD_BOUNDS;
         weapon.bulletSpeed = 500;
         //weapon.bulletSpeedVariance = 50;
