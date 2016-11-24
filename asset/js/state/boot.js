@@ -21,20 +21,20 @@ class MyShow {
     }
 
     addGroup() {
-        game.stage.disableVisibilityChange = true;
+        //game.stage.disableVisibilityChange = true;
         let myGroup = game.add.group();
         myGroup.enableBody = true;
         myGroup.createMultiple(20, 'bs');
         myGroup.setAll('outOfBoundsKill', true);
         myGroup.setAll('checkWorldBounds', true);
-        window.setInterval(function () {
-            let e = myGroup.getFirstExists(false);
-            if (e) {
-                e.reset(game.rnd.integerInRange(10, game.width), 100);
-                //e.life = 5;
-                e.body.velocity.y = 100;
-            }
-        }, 500);
+        //window.setInterval(function () {
+        //    let e = myGroup.getFirstExists(false);
+        //    if (e) {
+        //        e.reset(game.rnd.integerInRange(10, game.width), 100);
+        //        //e.life = 5;
+        //        e.body.velocity.y = 100;
+        //    }
+        //}, 500);
         game.physics.arcade.enable(myGroup);
         return myGroup;
 
