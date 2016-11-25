@@ -26,6 +26,7 @@ function loadState(game) {
         game.load.image('orb2','asset/img/orb-green.png');
         game.load.image('orb3','asset/img/orb-red.png');
         game.load.image('shmup','asset/img/shmup-boom.png');
+        game.load.image('myplane','asset/img/xenon2_ship.png');
 
     }
 

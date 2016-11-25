@@ -78,7 +78,7 @@ function playState(game) {
                 num = datas[2];
                 let oldPlane = datas[3].split(',');
                 for (let i = 0; i < oldPlane.length-1; i++) {
-                    planeArrays[parseInt(oldPlane[i])] = myplane.addPlane(parseInt(oldPlane[i]) * 100 +100,500);
+                    planeArrays[parseInt(oldPlane[i])] = myplane.addPlane(parseInt(oldPlane[i]) * 100 +100,500,'plane2');
                     websponeArrays[oldPlane[i]] = myplane.addWeapon(planeArrays[parseInt(oldPlane[i])], 0, 0);
                 }
 
@@ -99,11 +99,16 @@ function playState(game) {
             else if (datas[0] == 'j') {//玩家加入
                 //玩家加入后 等10秒钟才能进入现实自己的飞机 不然敌人不同步
                 setTimeout(function () {
-                    planeArrays[parseInt(datas[1])] = myplane.addPlane(parseInt(datas[1]) * 100 + 100, 500);
-                    websponeArrays[parseInt(datas[1])] = myplane.addWeapon(planeArrays[parseInt(datas[1])], 0, 0);
+                    if (datas[1] != num){
+                        planeArrays[parseInt(datas[1])] = myplane.addPlane(parseInt(datas[1]) * 100 + 100, 500,'plane2');
+                        websponeArrays[parseInt(datas[1])] = myplane.addWeapon(planeArrays[parseInt(datas[1])], 0, 0);
+                    }else{
+                        planeArrays[parseInt(datas[1])] = myplane.addPlane(parseInt(datas[1]) * 100 + 100, 500,'myplane');
+                        websponeArrays[parseInt(datas[1])] = myplane.addWeapon(planeArrays[parseInt(datas[1])], 0, 0)
+                    }
                     isJoin = true;
                     endTimeText.destroy();
-                },10000);
+                },5000);
             }
             else if(datas[0] == 'l'){//玩家离开
                 planeArrays[parseInt(datas[1])].kill();

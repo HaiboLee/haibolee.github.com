@@ -12,7 +12,7 @@ class MyShow {
         em.setScale(0.2, 0.5, 0.2, 0.5, 1000);
         em.gravity = 0;
         //em.setAlpha(1,0.1,5000);
-        em.setRotation(Math.floor(Math.random()*200)+200,Math.floor(Math.random()*200)+200);
+        //em.setRotation(Math.floor(Math.random()*200)+200,Math.floor(Math.random()*200)+200);
         return em;
     }
 
@@ -68,8 +68,8 @@ class MyPlane {
         this.game = game;
     }
 
-    addPlane(x, y) {
-        let plane = game.add.sprite(x, y, 'plane2');
+    addPlane(x, y,p) {
+        let plane = game.add.sprite(x, y, p);
         //plane.scale.setTo(0.2);
         plane.anchor.setTo(0.5, 0.5);
         plane.inputEnabled = true;
