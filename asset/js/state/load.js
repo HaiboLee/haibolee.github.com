@@ -13,6 +13,9 @@ function loadState(game) {
         preload.anchor.setTo(0.5);
         nnn =  game.load.setPreloadSprite(preload);
 
+        let loadText = game.add.text(game.width/2,game.height/2+50,preload.width+'%');
+        loadText.fill = '#00ff00';
+
         game.load.image('box1', 'asset/img/box1.png');
         game.load.image('box', 'asset/img/box.png');
         game.load.image('plane', 'asset/img/plane.png');
@@ -38,5 +41,6 @@ function loadState(game) {
     }
 
     this.update = function () {
+        console.log(nnn);
     }
 }

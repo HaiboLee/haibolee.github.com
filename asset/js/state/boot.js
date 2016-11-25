@@ -4,7 +4,7 @@ class MyShow {
     }
 
     showEmitter(x, y) {
-        var lz = ['orb1','orb2','orb3'];
+        var lz = ['chunk'];
         let em = game.add.emitter(x, y, 50);
         em.makeParticles(lz);
         em.setXSpeed(-25, 25);
