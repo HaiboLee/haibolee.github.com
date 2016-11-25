@@ -23,7 +23,8 @@ class MyShow {
     addGroup() {
         let myGroup = game.add.group();
         myGroup.enableBody = true;
-        myGroup.createMultiple(20, 'bs');
+        myGroup.createMultiple(10, 'e1');
+        myGroup.createMultiple(10, 'e2');
         myGroup.setAll('outOfBoundsKill', true);
         myGroup.setAll('checkWorldBounds', true);
         window.setInterval(function () {
@@ -57,7 +58,7 @@ class MyShow {
             emts.flow(1500, 250, 10, 1, true);
             a.kill();
             b.kill();
-            camera.shake(0.001, 500, false, Phaser.Camera.SHAKE_BOTH, true);
+            //camera.shake(0.001, 500, false, Phaser.Camera.SHAKE_BOTH, true);
         }, null, this);
     }
 }
@@ -83,12 +84,14 @@ class MyPlane {
         let weapon = game.add.weapon(30, 'chunk');
        // weapon.addBulletAnimation('fly', [0, 1, 2, 3], 12, true);
         weapon.bulletKillType = Phaser.Weapon.KILL_WORLD_BOUNDS;
-        weapon.bulletSpeed = 500;
-        //weapon.bulletSpeedVariance = 50;
+        weapon.bulletSpeed = 300;
+        //weapon.bulletSpeedVariance = 200;
         weapon.bulletRotateToVelocity = true;
         weapon.shots = 10;
-        weapon.fireRate = 500;
-        //weapon.bulletAngleVariance = 20;
+        //weapon.fireRate = 500;
+        weapon.bulletAngleVariance = 5;
+        weapon.fireRate = 200;
+        //weapon.bulletAngleOffset = 90;
         weapon.trackSprite(sprite, x, y, true);
         return weapon;
     }

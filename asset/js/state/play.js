@@ -47,7 +47,7 @@ function playState(game) {
         camera = game.camera;
 
         //背景
-        game.add.image(0,0,'bg');
+        //game.add.image(0,0,'bg');
         let ball = game.add.image(game.width,game.height,'ball');
         ball.anchor.setTo(0.5);
        //ball.scale.setTo(0.8);
@@ -84,12 +84,10 @@ function playState(game) {
 
                 endTimeText = game.add.text(game.width/2,game.height/2,endTime);
                 endTimeText.anchor.setTo(0.5);
-                game.time.events.repeat(1000,10, function () {
-                    //endTimeText.text = endTime--;
-                    //if (endTime == 1){
-                    //    endTimeText.destroy();
-                    //}
-                })
+                endTimeText.font = 'Arial Black';
+                endTimeText.fontWeight = 'bold';
+                endTimeText.fill = '#ec008c';
+                endTimeText.fontSize = 50;
                 console.log(oldPlane);
             }
             else if (datas[0] == 't') {//转向
@@ -129,6 +127,20 @@ function playState(game) {
             websocket.send('c:' + flag + ':' + num);
             console.log('关闭窗口');
         }
+
+        game.input.onDown.add(function () {
+            //closews();
+        });
+        
+        document.addEventListener('visibilitychange', function () {
+            let visi = document.webkitVisibilityState;
+            if (visi == 'hidden'){
+                closews();
+            }else{
+                game.state.start('play');
+            }
+        })
+
     }
 
     this.update = function () {
@@ -159,5 +171,15 @@ function playState(game) {
             i++;
         }
         return i;
+    }
+
+    function closews(){
+        //planeArrays[num].kill();
+        //websponeArrays[num] = null;
+        //websponeArrays = null;
+        //planeArrays = null;
+        isJoin = false;
+        websocket.send('c:' + flag + ':' + num);
+        websocket.close();
     }
 }
