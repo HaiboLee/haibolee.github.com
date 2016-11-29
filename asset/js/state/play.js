@@ -1,20 +1,21 @@
 function playState(game) {
     let myplane;
     let cursors;
-    let my;
-    let emt;
-    let myGroup;
+    let enemy;
     let flag;
     let num;
     let websocket;
+    let e1;
     let planeArrays = {};//飞机组
     let websponeArrays = {};//武器组
     let stats;
     let camera;
     let isJoin = false;
+    let life;
+    let group;
     let endTimeText = null,endTime = '请稍等,正在接入你的战机...';//倒计时
     this.init = function () {
-        my = new MyShow(game);
+        enemy = new Enemy(game);
         myplane = new MyPlane(game);
         game.stage.disableVisibilityChange = true;
 
@@ -40,10 +41,6 @@ function playState(game) {
             console.log(nowstate);
         }
 
-        var cache = game.cache;
-        game.input.onDown.add(function () {
-            console.log(cache)
-        });
         camera = game.camera;
 
         //背景
@@ -58,10 +55,30 @@ function playState(game) {
             //camera.shake(0.005, 500, false, Phaser.Camera.SHAKE_BOTH, true);
         },60000);
 
-        emt = my.showEmitter(500, 500); //爆炸效果
-        myGroup = my.addGroup();//敌人组
+
+
+        //let eGroup = game.add.group();
+        //e1 = eGroup.create(0,0,'wasp');
+        //e1.setHealth(100);
+        //game.physics.arcade.enable(e1);
+        //life = game.add.text(50,-30,e1.health,null,eGroup);
+        //life.fill = '#00ff00';
+        //life.setHealth(e1.health);
+        //eGroup.x = 100;
+        //eGroup.y = 100;
+        //eGroup.enableBody = true;
+        //game.add.tween(eGroup).to({x:900},5000,null,true,0,Number.MAX_VALUE,true);
+
+        let enemys = enemy.makeEnemy(100,100,'wasp',50);
+        group = enemys[0];
+        e1 = enemys[1];
+        life = enemys[2];
 
         game.input.onDown.add(function () {
+            e1.damage(1);
+            life.damage(1);
+            life.setText(e1.health);
+            console.log(e1.health);
         });
         cursors = this.input.keyboard.createCursorKeys();
 
@@ -114,7 +131,7 @@ function playState(game) {
                 planeArrays[parseInt(datas[1])] = null;
             }
             else if(datas[0] == 'e'){//产生敌人
-                my.createEnemy(myGroup,parseInt(datas[1]));
+                //my.createEnemy(myGroup,parseInt(datas[1]));
             }
         }
 
@@ -128,10 +145,6 @@ function playState(game) {
             console.log('关闭窗口');
         }
 
-        game.input.onDown.add(function () {
-            //closews();
-        });
-        
         document.addEventListener('visibilitychange', function () {
             let visi = document.webkitVisibilityState;
             if (visi == 'hidden'){
@@ -144,11 +157,22 @@ function playState(game) {
     }
 
     this.update = function () {
-        for(let i = 0;i<getLength(websponeArrays);i++){
-            if(websponeArrays[i]!=null){
-                my.boom(emt,myGroup,websponeArrays[i],camera);
+        //for(let i = 0;i<getLength(websponeArrays);i++){
+            if(websponeArrays[num]!=null){
+                //my.boom(emt,e1,websponeArrays[num],camera);
+                websponeArrays[num].fire();
+                game.physics.arcade.overlap(e1,websponeArrays[num].bullets,function(a,b){
+                    b.kill();
+                    e1.damage(1);
+                    //life.damage(1);
+                    life.setText(e1.health);
+                    if(life.text == 0) {
+                        life.destroy();
+                    }
+                    console.log(e1.health);
+                });
             }
-        }
+        //}
             if (cursors.right.isDown) {
                 if (isJoin) {
                     sendMessage("t:" + flag + ":" + num + ":" + "r:" + planeArrays[parseInt(num)].x);

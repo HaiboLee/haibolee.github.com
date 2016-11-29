@@ -32,6 +32,7 @@ function loadState(game) {
         game.load.image('myplane','asset/img/xenon2_ship.png');
         game.load.image('e1','asset/img/space-baddie.png');
         game.load.image('e2','asset/img/space-baddie-purple.png');
+        game.load.image('wasp','asset/img/wasp.png');
 
     }
 
