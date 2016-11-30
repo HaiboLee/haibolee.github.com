@@ -13,4 +13,5 @@ window.addEventListener('devicemotion', function (e) {
     var x = acceleration.x;
     var y = acceleration.y;
     console.log(acceleration)
+    document.getElementById("test").innerHTML="55555";
 })
