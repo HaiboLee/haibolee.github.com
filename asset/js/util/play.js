@@ -110,7 +110,7 @@ var playState = function (game) {
         })
 
         weapon.fire();
-        plane.body.gravity.x = xv;
-        plane.body.gravity.y = yv;
+        plane.body.velocity.x = xv;
+        plane.body.velocity.y = yv;
     }
 }
