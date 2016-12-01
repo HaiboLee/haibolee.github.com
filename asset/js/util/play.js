@@ -14,7 +14,7 @@ var playState = function (game) {
             var acceleration = event.accelerationIncludingGravity;
             var x = Math.floor(acceleration.x);
             var y = Math.floor(acceleration.y);
-            xv = x*150;
+            xv = x*100;
         })
 
     }
