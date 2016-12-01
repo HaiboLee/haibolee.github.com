@@ -69,6 +69,8 @@ var playState = function (game) {
             }
         })
 
+        plane.inputEnabled = true;
+        plane.input.enableDrag(false);
 
     }
     this.update = function () {
@@ -83,10 +85,10 @@ var playState = function (game) {
         game.physics.arcade.overlap(plane,group, function () {
             plane.kill();
             gameover = game.add.text(game.width/2,game.height,'game over');
-            gameover.fill = '0xff0000';
-            gameover.fontSize = 20;
+            gameover.fill = '#ec008c';
+            gameover.fontSize = 50;
             gameover.anchor.setTo(0.5,0);
-            game.add.tween(gameover).to({y:game.height/2},2000,null,true,100,1,false);
+            game.add.tween(gameover).to({y:game.height/2},2000,null,true,100,0,false);
             over = true;
         })
 
