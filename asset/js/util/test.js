@@ -2,10 +2,8 @@
 //worker.onmessage = function (eve) {
 //    console.log(eve.data);
 //}
-console.log(window.DeviceOrientationEvent);
 
-$(window).on('deviceorientation', function (e) {
-    console.log('ppp')
+window.addEventListener('deviceorientation', function (e) {
     var a = e.alpha;
     var b = e.beta;
     var c = e.gamma;
