@@ -7,7 +7,7 @@ window.addEventListener('deviceorientation', function (e) {
     var a = e.alpha;
     var b = e.beta;
     var c = e.gamma;
-    document.getElementById("test").innerHTML ="a:"+ Math.floor(a) + " b:" + Math.floor(b) +" c:" + Math.floor(c)
+    //document.getElementById("test").innerHTML ="a:"+ Math.floor(a) + " b:" + Math.floor(b) +" c:" + Math.floor(c)
 });
 
 window.addEventListener('devicemotion', function (e) {
@@ -15,5 +15,5 @@ window.addEventListener('devicemotion', function (e) {
     var x = acceleration.x;
     var y = acceleration.y;
     console.log(acceleration)
-    //document.getElementById("test").innerHTML="55555";
+    document.getElementById("test").innerHTML="x:"+Math.floor(x) + " y:" + Math.floor(y);
 })
