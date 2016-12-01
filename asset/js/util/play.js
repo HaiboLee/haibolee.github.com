@@ -3,6 +3,7 @@ var playState = function (game) {
     let xv,yv;
     let score,num = 0;
     let gameover,over=false;
+    let boom;
     this.create = function () {
         stats = new Stats();
         stats.setMode(0); // 0: fps, 1: ms
@@ -44,14 +45,13 @@ var playState = function (game) {
         group.createMultiple(5, 'e2');
         group.setAll('outOfBoundsKill', true);
         group.setAll('checkWorldBounds', true);
-        window.setInterval(function () {
+        game.time.events.loop(1000, function () {
             let e = group.getFirstExists(false);
             if (e) {
                 e.reset(game.rnd.integerInRange(10, game.width-10), 50);
-                //e.life = 5;
                 e.body.velocity.y = 100;
             }
-        }, 1000);
+        },this);
         game.physics.arcade.enable(group);
 
 
@@ -62,12 +62,20 @@ var playState = function (game) {
         //gameover点击返回
         game.input.onDown.add(function () {
             if (over){
-                score = 0;
+                num = 0;
                 gameover = null;
                 over = false;
                 game.state.start('play');
             }
+        });
+
+        //爆炸效果
+        boom = game.add.group();
+        boom.createMultiple(5,'boom');
+        boom.forEach(function(b){
+            b.animations.add('show');
         })
+
 
         plane.inputEnabled = true;
         plane.input.enableDrag(false);
@@ -78,12 +86,18 @@ var playState = function (game) {
         game.physics.arcade.overlap(group,weapon.bullets, function (a,b) {
             a.kill();
             b.kill();
+            let e = boom.getFirstExists(false);
+            if (e){
+                e.reset(b.x,b.y);
+                e.play('show',45,false,true);
+            }
             num++;
             score.setText(num);
         });
 
         game.physics.arcade.overlap(plane,group, function () {
             plane.kill();
+            //enemy = null;
             gameover = game.add.text(game.width/2,game.height,'game over');
             gameover.fill = '#ec008c';
             gameover.fontSize = 50;
