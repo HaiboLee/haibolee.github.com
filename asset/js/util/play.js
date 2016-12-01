@@ -88,7 +88,7 @@ var playState = function (game) {
             b.kill();
             let e = boom.getFirstExists(false);
             if (e){
-                e.reset(b.x,b.y);
+                e.reset(a.x,a.y);
                 e.play('show',45,false,true);
             }
             num++;

@@ -6,6 +6,9 @@ var loadState = function (game) {
     }
 
     this.preload = function () {
+        let preload = game.add.sprite(game.width/2,game.height/2,'preload');
+        preload.anchor.setTo(0.5);
+        game.load.setPreloadSprite(preload);
         game.load.image('bg','../../img/IMG_1138.JPG');
         game.load.image('plane','../../img/thrust_ship.png');
         game.load.image('chunk','../../img/chunk.png');
