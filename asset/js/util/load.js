@@ -9,6 +9,8 @@ var loadState = function (game) {
         game.load.image('bg','../../img/IMG_1138.JPG');
         game.load.image('plane','../../img/thrust_ship.png');
         game.load.image('chunk','../../img/chunk.png');
+        game.load.image('e1','../../img/space-baddie.png');
+        game.load.image('e2','../../img/space-baddie-purple.png');
     }
     
     this.create = function () {
