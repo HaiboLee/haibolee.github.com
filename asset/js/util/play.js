@@ -15,7 +15,7 @@ var playState = function (game) {
             var x = Math.floor(acceleration.x);
             var y = Math.floor(acceleration.y);
             xv = x*100;
-            yv = y*50;
+            yv = -y*50;
         })
 
         //子弹系统
