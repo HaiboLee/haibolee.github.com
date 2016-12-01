@@ -4,7 +4,9 @@ var playState = function (game) {
     let score,num = 0;
     let gameover,over=false;
     let boom;
+    let hitsound;
     this.create = function () {
+        hitsound = game.add.sound('hit');
         stats = new Stats();
         stats.setMode(0); // 0: fps, 1: ms
         stats.domElement.style.position = 'absolute';
@@ -87,6 +89,7 @@ var playState = function (game) {
         game.physics.arcade.overlap(group,weapon.bullets, function (a,b) {
             a.kill();
             b.kill();
+            hitsound.play();
             let e = boom.getFirstExists(false);
             if (e){
                 e.reset(a.x,a.y);
@@ -98,7 +101,6 @@ var playState = function (game) {
 
         game.physics.arcade.overlap(plane,group, function () {
             plane.kill();
-            //enemy = null;
             gameover = game.add.text(game.width/2,game.height,'game over');
             gameover.fill = '#ec008c';
             gameover.fontSize = 50;

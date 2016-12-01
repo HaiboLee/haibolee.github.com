@@ -10,6 +10,7 @@ var loadState = function (game) {
         game.load.image('e1','../../img/space-baddie.png');
         game.load.image('e2','../../img/space-baddie-purple.png');
         game.load.spritesheet('boom','../../img/boom32wh12.png',32,32);
+        game.load.audio('hit','../../music/hit.wav');
     }
     
     this.create = function () {
