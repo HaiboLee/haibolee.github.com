@@ -15,7 +15,7 @@
     <script src="play.js"></script>
     <script src="boot.js"></script>
     <script>
-        var game = new Phaser.Game(360, 640, Phaser.WEBGL, 'container');
+        var game = new Phaser.Game(360, 640, Phaser.AUTO, 'container');
         game.state.add('boot', bootState);
         game.state.add('load', loadState);
         game.state.add('play', playState);
