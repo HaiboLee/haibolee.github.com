@@ -1,5 +1,5 @@
 var playState = function (game) {
-    let plane;
+    let plane,weapon;
     let xv;
     this.create = function () {
         game.stage.disableVisibilityChange = true;
@@ -17,8 +17,19 @@ var playState = function (game) {
             xv = x*100;
         })
 
+        //子弹系统
+        weapon = game.add.weapon(30,'chunk');
+        weapon.bulletKillType = Phaser.Weapon.KILL_WORLD_BOUNDS;
+        weapon.bulletSpeed = 300;
+        weapon.bulletRotateToVelocity = true;
+        weapon.shots = 10;
+        weapon.bulletAngleVariance = 3;
+        weapon.fireRate = 200;
+        weapon.trackSprite(plane, 0, 0, true);
+
     }
     this.update = function () {
+        weapon.fire();
         plane.body.velocity.x = xv;
     }
 }
