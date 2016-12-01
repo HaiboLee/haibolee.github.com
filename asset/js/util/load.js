@@ -1,9 +1,4 @@
 var loadState = function (game) {
-    this.init = function () {
-        game.scale.pageAlignVertically = true;
-        game.scale.pageAlignHorizontally = true;
-        game.scale.scaleMode = Phaser.ScaleManager.EXACT_FIT;
-    }
 
     this.preload = function () {
         let preload = game.add.sprite(game.width/2,game.height/2,'preload');

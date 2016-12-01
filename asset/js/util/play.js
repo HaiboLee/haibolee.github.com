@@ -20,13 +20,18 @@ var playState = function (game) {
         game.physics.arcade.enable(plane);
         //plane.body.gravity.y = 100;
         plane.body.collideWorldBounds = true;
-        window.addEventListener('devicemotion', function (e) {
-            var acceleration = event.accelerationIncludingGravity;
-            var x = Math.floor(acceleration.x);
-            var y = Math.floor(acceleration.y);
-            xv = x*100;
-            yv = -(y+4)*50;
-        })
+        if(!game.device.desktop){
+            window.addEventListener('devicemotion', function (e) {
+                var acceleration = event.accelerationIncludingGravity;
+                var x = Math.floor(acceleration.x);
+                var y = Math.floor(acceleration.y);
+                xv = x*100;
+                yv = -(y+4)*50;
+            })
+        }else{
+            plane.inputEnabled = true;
+            plane.input.enableDrag(false);
+        }
 
         //子弹系统
         weapon = game.add.weapon(30,'chunk');
@@ -75,10 +80,6 @@ var playState = function (game) {
         boom.forEach(function(b){
             b.animations.add('show');
         })
-
-
-        plane.inputEnabled = true;
-        plane.input.enableDrag(false);
 
     }
     this.update = function () {
