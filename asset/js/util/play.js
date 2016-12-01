@@ -1,7 +1,16 @@
 var playState = function (game) {
-    let plane,weapon,group;
+    let plane,weapon,group,stats;
     let xv,yv;
+    let score,num = 0;
+    let gameover,over=false;
     this.create = function () {
+        stats = new Stats();
+        stats.setMode(0); // 0: fps, 1: ms
+        stats.domElement.style.position = 'absolute';
+        stats.domElement.style.left = '0px';
+        stats.domElement.style.top = '0px';
+        document.body.appendChild(stats.domElement);
+
         game.stage.disableVisibilityChange = true;
         game.add.image(0,0,'bg').scale.setTo(0.5);
         plane = game.add.sprite(game.width/2,game.height-100,'plane');
@@ -31,8 +40,8 @@ var playState = function (game) {
         //敌人系统
         group = game.add.group();
         group.enableBody = true;
-        group.createMultiple(10, 'e1');
-        group.createMultiple(10, 'e2');
+        group.createMultiple(5, 'e1');
+        group.createMultiple(5, 'e2');
         group.setAll('outOfBoundsKill', true);
         group.setAll('checkWorldBounds', true);
         window.setInterval(function () {
@@ -46,16 +55,40 @@ var playState = function (game) {
         game.physics.arcade.enable(group);
 
 
-        //爆炸效果
+        //计分板
+        score = game.add.text(game.width,0,num);
+        score.anchor.setTo(1,0);
+
+        //gameover点击返回
+        game.input.onDown.add(function () {
+            if (over){
+                score = 0;
+                gameover = null;
+                over = false;
+                game.state.start('play');
+            }
+        })
 
 
     }
     this.update = function () {
-
+        stats.update();
         game.physics.arcade.overlap(group,weapon.bullets, function (a,b) {
             a.kill();
             b.kill();
+            num++;
+            score.setText(num);
         });
+
+        game.physics.arcade.overlap(plane,group, function () {
+            plane.kill();
+            gameover = game.add.text(game.width/2,game.height,'game over');
+            gameover.fill = '0xff0000';
+            gameover.fontSize = 20;
+            gameover.anchor.setTo(0.5,0);
+            game.add.tween(gameover).to({y:game.height/2},2000,null,true,100,1,false);
+            over = true;
+        })
 
         weapon.fire();
         plane.body.velocity.x = xv;
