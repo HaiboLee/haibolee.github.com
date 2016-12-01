@@ -2,14 +2,25 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
-    <script src="../lib/jquery.min.js"></script>
-    <script src="test.js"></script>
-    <script type="text/javascript">
-
+    <title>plane</title>
+    <style>
+        body {
+            margin: auto;
+        }
+        div,html,body{height:100%;overflow:hidden;}
+    </style>
+    <script src="../lib/phaser.js"></script>
+    <script src="../lib/stats.min.js"></script>
+    <script src="load.js"></script>
+    <script src="play.js"></script>
+    <script>
+        var game = new Phaser.Game(360, 640, Phaser.WEBGL, 'container');
+        game.state.add('load', loadState);
+        game.state.add('play', playState);
+        game.state.start('load');
     </script>
 </head>
 <body>
-<div id="test1"><font size="20" id = 'test'></font></div>
+<div style="background-color: dimgray" id="container"></div>
 </body>
 </html>
