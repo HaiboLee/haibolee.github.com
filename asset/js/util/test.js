@@ -6,6 +6,10 @@ console.log(window.DeviceOrientationEvent);
 
 $(window).on('deviceorientation', function (e) {
     console.log('ppp')
+    var a = e.alpha;
+    var b = e.beta;
+    var c = e.gamma;
+    document.getElementById("test").innerHTML ="a:"+ a + " b:" +b +" c:" +c
 });
 
 window.addEventListener('devicemotion', function (e) {
@@ -13,5 +17,5 @@ window.addEventListener('devicemotion', function (e) {
     var x = acceleration.x;
     var y = acceleration.y;
     console.log(acceleration)
-    document.getElementById("test").innerHTML="55555";
+    //document.getElementById("test").innerHTML="55555";
 })
