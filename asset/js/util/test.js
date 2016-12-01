@@ -7,7 +7,7 @@ window.addEventListener('deviceorientation', function (e) {
     var a = e.alpha;
     var b = e.beta;
     var c = e.gamma;
-    document.getElementById("test").innerHTML ="a:"+ a + " b:" +b +" c:" +c
+    document.getElementById("test").innerHTML ="a:"+ Math.floor(a) + " b:" + Math.floor(b) +" c:" + Math.floor(c)
 });
 
 window.addEventListener('devicemotion', function (e) {
