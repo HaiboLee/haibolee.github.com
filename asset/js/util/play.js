@@ -7,12 +7,12 @@ var playState = function (game) {
     let hitsound;
     this.create = function () {
         hitsound = game.add.sound('hit');
-        stats = new Stats();
+ /*       stats = new Stats();
         stats.setMode(0); // 0: fps, 1: ms
         stats.domElement.style.position = 'absolute';
         stats.domElement.style.left = '0px';
         stats.domElement.style.top = '0px';
-        document.body.appendChild(stats.domElement);
+        document.body.appendChild(stats.domElement);*/
 
         game.stage.disableVisibilityChange = true;
         game.add.image(0,0,'bg').scale.setTo(0.5);
@@ -85,7 +85,7 @@ var playState = function (game) {
 
     }
     this.update = function () {
-        stats.update();
+        //stats.update();
         game.physics.arcade.overlap(group,weapon.bullets, function (a,b) {
             a.kill();
             b.kill();
