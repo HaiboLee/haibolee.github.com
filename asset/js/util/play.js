@@ -13,7 +13,7 @@ var playState = function (game) {
         stats.domElement.style.left = '0px';
         stats.domElement.style.top = '0px';
         document.body.appendChild(stats.domElement);*/
-
+        alert(5);
         game.stage.disableVisibilityChange = true;
         game.add.image(0,0,'bg').scale.setTo(0.5);
         plane = game.add.sprite(game.width/2,game.height-100,'plane');
@@ -34,7 +34,7 @@ var playState = function (game) {
             plane.inputEnabled = true;
             plane.input.enableDrag(false);
         }
-
+        alert(6);
         //子弹系统
         weapon = game.add.weapon(30,'chunk');
         weapon.bulletKillType = Phaser.Weapon.KILL_WORLD_BOUNDS;
@@ -44,7 +44,7 @@ var playState = function (game) {
         weapon.bulletAngleVariance = 3;
         weapon.fireRate = 200;
         weapon.trackSprite(plane, 0, 0, true);
-
+        alert(7);
         //敌人系统
         group = game.add.group();
         group.enableBody = true;
@@ -60,7 +60,7 @@ var playState = function (game) {
             }
         },this);
         game.physics.arcade.enable(group);
-
+        alert(8);
 
         //计分板
         score = game.add.text(game.width,0,num);
@@ -75,14 +75,14 @@ var playState = function (game) {
                 game.state.start('play');
             }
         });
-
+        alert(9);
         //爆炸效果
         boom = game.add.group();
         boom.createMultiple(5,'boom');
         boom.forEach(function(b){
             b.animations.add('show');
         })
-
+        alert(10);
     }
     this.update = function () {
         //stats.update();

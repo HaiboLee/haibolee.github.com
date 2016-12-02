@@ -4,6 +4,7 @@ var loadState = function (game) {
         let preload = game.add.sprite(game.width/2,game.height/2,'preload');
         preload.anchor.setTo(0.5);
         game.load.setPreloadSprite(preload);
+        alert(3);
         game.load.image('bg','../../img/IMG_1138.JPG');
         game.load.image('plane','../../img/thrust_ship.png');
         game.load.image('chunk','../../img/chunk.png');
@@ -11,6 +12,7 @@ var loadState = function (game) {
         game.load.image('e2','../../img/space-baddie-purple.png');
         game.load.spritesheet('boom','../../img/boom32wh12.png',32,32);
         game.load.audio('hit','../../music/hit.wav');
+        alert(4);
     }
     
     this.create = function () {
