@@ -1,5 +1,5 @@
 var playState = function (game) {
-    var plane, weapon, group, stats,life;
+    var plane, weapon, group, stats,life,camera,time;
     var xv, yv;
     var score, num = 0;
     var gameover, over = false;
@@ -50,7 +50,7 @@ var playState = function (game) {
         group.createMultiple(5, 'e2');
         group.setAll('outOfBoundsKill', true);
         group.setAll('checkWorldBounds', true);
-        game.time.events.loop(1000, function () {
+        time = game.time.events.loop(1000, function () {
             var e = group.getFirstExists(false);
             if (e) {
                 e.reset(game.rnd.integerInRange(10, game.width - 10), 50);
@@ -79,7 +79,7 @@ var playState = function (game) {
             b.animations.add('show');
         });
 
-        //boos
+        camera = game.camera;
     }
     this.update = function () {
         chickBoom(group, weapon.bullets, 1);
@@ -117,6 +117,9 @@ var playState = function (game) {
                 case 2:
                     if (boos.health == 0) {
                         num += 5;
+                        camera.shake(0.005, 500, false, Phaser.Camera.SHAKE_BOTH, true);
+                        camera.flash('0xff0000', 500, true);
+                        time.delay -=100;
                     }
                     break;
                 case 3:
