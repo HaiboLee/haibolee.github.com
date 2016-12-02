@@ -1,10 +1,10 @@
 var playState = function (game) {
-    let plane,weapon,group,stats;
-    let xv,yv;
-    let score,num = 0;
-    let gameover,over=false;
-    let boom;
-    let hitsound;
+    var plane,weapon,group,stats;
+    var xv,yv;
+    var score,num = 0;
+    var gameover,over=false;
+    var boom;
+    var hitsound;
     this.create = function () {
         hitsound = game.add.sound('hit');
  /*       stats = new Stats();
@@ -13,7 +13,6 @@ var playState = function (game) {
         stats.domElement.style.left = '0px';
         stats.domElement.style.top = '0px';
         document.body.appendChild(stats.domElement);*/
-        alert(5);
         game.stage.disableVisibilityChange = true;
         game.add.image(0,0,'bg').scale.setTo(0.5);
         plane = game.add.sprite(game.width/2,game.height-100,'plane');
@@ -34,7 +33,6 @@ var playState = function (game) {
             plane.inputEnabled = true;
             plane.input.enableDrag(false);
         }
-        alert(6);
         //子弹系统
         weapon = game.add.weapon(30,'chunk');
         weapon.bulletKillType = Phaser.Weapon.KILL_WORLD_BOUNDS;
@@ -44,7 +42,6 @@ var playState = function (game) {
         weapon.bulletAngleVariance = 3;
         weapon.fireRate = 200;
         weapon.trackSprite(plane, 0, 0, true);
-        alert(7);
         //敌人系统
         group = game.add.group();
         group.enableBody = true;
@@ -53,14 +50,13 @@ var playState = function (game) {
         group.setAll('outOfBoundsKill', true);
         group.setAll('checkWorldBounds', true);
         game.time.events.loop(1000, function () {
-            let e = group.getFirstExists(false);
+            var e = group.getFirstExists(false);
             if (e) {
                 e.reset(game.rnd.integerInRange(10, game.width-10), 50);
                 e.body.velocity.y = 100;
             }
         },this);
         game.physics.arcade.enable(group);
-        alert(8);
 
         //计分板
         score = game.add.text(game.width,0,num);
@@ -75,14 +71,12 @@ var playState = function (game) {
                 game.state.start('play');
             }
         });
-        alert(9);
         //爆炸效果
         boom = game.add.group();
         boom.createMultiple(5,'boom');
         boom.forEach(function(b){
             b.animations.add('show');
         })
-        alert(10);
     }
     this.update = function () {
         //stats.update();
@@ -90,7 +84,7 @@ var playState = function (game) {
             a.kill();
             b.kill();
             hitsound.play();
-            let e = boom.getFirstExists(false);
+            var e = boom.getFirstExists(false);
             if (e){
                 e.reset(a.x,a.y);
                 e.play('show',45,false,true);
