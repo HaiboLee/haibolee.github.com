@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>多人俄罗斯方块</title>
+    <style>
+        body {
+            margin: auto;
+        }
+        div,html,body{height:100%;overflow:hidden;}
+    </style>
+    <script src="../js/phaser.js"></script>
+    <script src="../js/stats.min.js"></script>
+    <script src="js/boot.js"></script>
+    <script>
+        var game = new Phaser.Game(1000, 600, Phaser.AUTO, 'container');
+        game.state.add('boot',bootState);
+        game.state.start('boot');
+
+    </script>
+</head>
+<body>
+<div style="background-color: dimgray" id="container"></div>
+</body>
+</html>
