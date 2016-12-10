@@ -12,9 +12,15 @@
     <script src="../js/phaser.js"></script>
     <script src="../js/stats.min.js"></script>
     <script src="js/boot.js"></script>
+    <script src="js/load.js"></script>
+    <script src="js/play.js"></script>
+    <script src="js/util/drawMap.js"></script>
+    <script src="js/util/chick.js"></script>
     <script>
         var game = new Phaser.Game(1000, 600, Phaser.AUTO, 'container');
         game.state.add('boot',bootState);
+        game.state.add('load',loadState);
+        game.state.add('play',playState);
         game.state.start('boot');
 
     </script>
