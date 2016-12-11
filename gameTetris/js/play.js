@@ -1,12 +1,14 @@
 var playState = function (game) {
     var d=10,r=100;
-    var drawMap,chick;
-    var tileMap,layer1,l;
+    var drawMap,chick,createBox;
+    var tileMap,layer1,mybox;
     var stats,cursors;
     this.init = function () {
         drawMap = new DrawMap(game);
         drawMap.drawGrid(d,r);
         chick = new Chick();
+        createBox = new CreateBox(game);
+
 
         stats = new Stats();
         stats.setMode(0); // 0: fps, 1: ms
@@ -25,40 +27,38 @@ var playState = function (game) {
         layer1.resizeWorld();
         drawMap.drawBound(tileMap,layer1,r,d,3);
         tileMap.putTile(4,50,30,layer1);
-
-        l = game.add.sprite(d*11,r+d,'l');
-        l.anchor.setTo(0.5,1/3)
+        mybox = createBox.createMyBox(4,d*11,r+d);
         game.input.onDown.add(function () {
-
+            mybox.angle+=90;
         });
 
         //键盘监听
         document.onkeydown = function (event) {
             var e = event || window.event || arguments.callee.caller.arguments[0];
             if (e && e.keyCode == 38) { // 按 up
-                if (chick.chickAngle(l,d,tileMap,layer1)){
-                    l.angle+=90;
-                }
+                //if (chick.chickAngle(mybox,d,tileMap,layer1)){
+                //    mybox.angle+=90;
+                //}
+                chick.chickAngle(mybox,d,tileMap,layer1)
             }
             if (e && e.keyCode == 40) { // 按 down
-                if (chick.chickMove(l,d,tileMap,layer1,40)){
-                    l.y+=10;
+                if (chick.chickMove(mybox,d,tileMap,layer1,40)){
+                    mybox.y+=10;
                 }
             }
             if (e && e.keyCode == 37) { // 按 left
-                if (chick.chickMove(l,d,tileMap,layer1,37)){
-                    l.x-=d;
+                if (chick.chickMove(mybox,d,tileMap,layer1,37)){
+                    mybox.x-=d;
                 }
             }
 
             if (e && e.keyCode == 39) { // 按 right
-                if (chick.chickMove(l,d,tileMap,layer1,39)){
-                    l.x+=d
+                if (chick.chickMove(mybox,d,tileMap,layer1,39)){
+                    mybox.x+=d
                 }
             }
-
             if(e && e.keyCode == 65){
-                l.y-=10
+                mybox.y-=10
             }
         }
     }
