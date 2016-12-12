@@ -27,10 +27,18 @@ var playState = function (game) {
         layer1.resizeWorld();
         drawMap.drawBound(tileMap,layer1,r,d,3);
         tileMap.putTile(4,50,30,layer1);
-        mybox = createBox.createMyBox(4,d*11,r+d);
+        mybox = createBox.createMyBox(4,d*20,r+d);
         game.input.onDown.add(function () {
-            mybox.angle+=90;
+            //mybox.angle+=90;
         });
+        setInterval(function () {
+            if (chick.chickMove(mybox,d,tileMap,layer1,40)){
+                mybox.y+=10;
+            }else{
+                mybox.x = d*20;
+                mybox.y = r+d;
+            }
+        },500);
 
         //键盘监听
         document.onkeydown = function (event) {

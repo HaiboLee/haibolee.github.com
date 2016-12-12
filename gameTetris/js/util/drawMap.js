@@ -16,6 +16,7 @@ class DrawMap{
             }
     }
 
+    //画边界
     drawBound(map,layer,r,d,c){
         var b = r/d;
         for (var i = b;i<game.height/d-b;i++){
@@ -27,5 +28,10 @@ class DrawMap{
         for(var i=b-1;i<game.width/d-b;i++ ){
             map.putTile(c,i,game.height/d-b,layer);
         }
+    }
+
+    //画方块
+    drawBox(box,map,layer){
+
     }
 }
