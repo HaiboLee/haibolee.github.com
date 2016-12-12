@@ -1,6 +1,7 @@
 class DrawMap{
-    constructor(game){
-        this.game = game;
+    constructor(map,layer){
+        this.map = map;
+        this.layer = layer;
     }
     //画网格
     drawGrid(d,r){
@@ -17,21 +18,21 @@ class DrawMap{
     }
 
     //画边界
-    drawBound(map,layer,r,d,c){
+    drawBound(r,d,c){
         var b = r/d;
         for (var i = b;i<game.height/d-b;i++){
-            map.putTile(c,(b-1),i,layer);
+            this.map.putTile(c,(b-1),i,this.layer);
         }
         for (var i = b;i<game.height/d-b+1;i++){
-            map.putTile(c,game.width/d-b,i,layer);
+            this.map.putTile(c,game.width/d-b,i,this.layer);
         }
         for(var i=b-1;i<game.width/d-b;i++ ){
-            map.putTile(c,i,game.height/d-b,layer);
+            this.map.putTile(c,i,game.height/d-b,this.layer);
         }
     }
 
     //画方块
-    drawBox(box,map,layer){
+    drawBox(box){
 
     }
 }

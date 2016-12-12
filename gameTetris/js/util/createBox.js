@@ -1,7 +1,4 @@
 class CreateBox{
-    constructor(game){
-        this.game = game;
-    }
     createMyBox(a,x,y){
         var box;
         if (a == 1){
