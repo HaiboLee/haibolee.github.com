@@ -3,6 +3,7 @@ var playState = function (game) {
     var drawMap,chick,createBox;
     var tileMap,layer1,mybox;
     var stats,cursors;
+    var xArray = [],yArray = [],aArray = [];
     this.init = function () {
 
         createBox = new CreateBox();
@@ -31,17 +32,30 @@ var playState = function (game) {
         drawMap.drawBound(r,d,3);
         tileMap.putTile(4,50,30,layer1);
         mybox = createBox.createMyBox(4,d*20,r+d);
+        tileMap.fill(1,50,25,5,4,layer1);
         game.input.onDown.add(function () {
-            //mybox.angle+=90;
-        });
-        setInterval(function () {
-            if (chick.chickMove(mybox,d,40)){
-                mybox.y+=10;
-            }else{
-                mybox.x = d*20;
-                mybox.y = r+d;
+            tileMap.forEach(function (e) {
+                if(e.index != undefined && e.index != -1 ){
+                    xArray.push(e.x);
+                    yArray.push(e.y);
+                    aArray.push(e.index);
+                }
+            },1,10,10,80,19,layer1);
+          for (var i = 0;i<xArray.length;i++){
+              tileMap.removeTile(xArray[i],yArray[i],layer1);
+          }
+            while (xArray.length != 0){
+                tileMap.putTile(aArray.shift(),xArray.shift(),yArray.shift()+1,layer1);
             }
-        },500);
+        });
+        //setInterval(function () {
+        //    if (chick.chickMove(mybox,d,40)){
+        //        mybox.y+=10;
+        //    }else{
+        //        mybox.x = d*20;
+        //        mybox.y = r+d;
+        //    }
+        //},500);
 
         //键盘监听
         document.onkeydown = function (event) {
