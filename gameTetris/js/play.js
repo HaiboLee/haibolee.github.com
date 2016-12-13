@@ -4,6 +4,7 @@ var playState = function (game) {
     var tileMap, layer1, mybox;
     var stats, cursors;
     var x = d * 20, y = r + d;
+    var chickLine = null;
     this.init = function () {
         createBox = new CreateBox();
 
@@ -23,23 +24,31 @@ var playState = function (game) {
         layer1.scrollFactorY = 0.5;
         layer1.resizeWorld();
 
-        drawMap = new DrawMap(tileMap, layer1, d);
-        chick = new Chick(tileMap, layer1);
-        drawMap.drawGrid(r);
+        drawMap = new DrawMap(tileMap, layer1, d,r);
+        chick = new Chick(tileMap, layer1, d, r);
+        drawMap.drawGrid();
 
-        drawMap.drawBound(r, 3);
+        drawMap.drawBound(3);
         tileMap.putTile(4, 50, 30, layer1);
-        mybox = createBox.createMyBox(0, x, y);
+        tileMap.fill(0, 10, 49, 77, 1, layer1);
+        mybox = createBox.createMyBox(3, x, y);
         game.input.onDown.add(function () {
-            //mybox.angle+=90;
+            //tileMap.putTile(1,10,481,layer1);
         });
         setInterval(function () {
-            if (chick.chickMove(mybox, d, 40)) {
+            if (chick.chickMove(mybox, 40)) {
                 mybox.y += 10;
             } else {
                 drawMap.drawBox(mybox);
+                chickLine = chick.chickLine(mybox);
+                //mybox = createBox.createMyBox(Math.floor(Math.random() * 4), x, y);
+                if (chickLine.length != 0) {
+                    drawMap.removeLine(chickLine);
+                    drawMap.downTile(chickLine);
+                    chickLine.splice(0,chickLine.length);
+                }
                 mybox.kill();
-                mybox = createBox.createMyBox(Math.floor(Math.random() * 4), x, y);
+                mybox = createBox.createMyBox(2, x, y);
             }
         }, 500);
 
@@ -50,21 +59,21 @@ var playState = function (game) {
                 //if (chick.chickAngle(mybox,d,tileMap,layer1)){
                 //    mybox.angle+=90;
                 //}
-                chick.chickAngle(mybox, d)
+                chick.chickAngle(mybox)
             }
             if (e && e.keyCode == 40) { // 按 down
-                if (chick.chickMove(mybox, d, 40)) {
+                if (chick.chickMove(mybox, 40)) {
                     mybox.y += 10;
                 }
             }
             if (e && e.keyCode == 37) { // 按 left
-                if (chick.chickMove(mybox, d, 37)) {
+                if (chick.chickMove(mybox, 37)) {
                     mybox.x -= d;
                 }
             }
 
             if (e && e.keyCode == 39) { // 按 right
-                if (chick.chickMove(mybox, d, 39)) {
+                if (chick.chickMove(mybox, 39)) {
                     mybox.x += d
                 }
             }
