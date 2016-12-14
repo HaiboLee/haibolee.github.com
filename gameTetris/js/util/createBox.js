@@ -1,4 +1,5 @@
 class CreateBox{
+
     createMyBox(a,x,y){
         var box;
         if (a == 0){
@@ -15,5 +16,9 @@ class CreateBox{
             box.anchor.setTo(1/3,0.5);
         }
         return box;
+    }
+
+    createUser(a,x,y){
+        game.add.image(x,y,a).anchor.setTo(0.5,0.5);
     }
 }
