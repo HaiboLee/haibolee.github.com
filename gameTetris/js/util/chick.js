@@ -1,13 +1,15 @@
 class Chick {
 
-    constructor(map,layer){
+    constructor(map, layer, d, r) {
         this.map = map;
         this.layer = layer;
+        this.d = d;
+        this.r = r;
     }
-    
-    chickAngle(box, d) {
-        var x = box.x / d;
-        var y = box.y / d;
+
+    chickAngle(box) {
+        var x = box.x / this.d;
+        var y = box.y / this.d;
         if (box.key == 'l') {
             switch (box.angle) {
                 case 0:
@@ -69,9 +71,9 @@ class Chick {
         }
     }
 
-    chickMove(box, d , go) {
-        var x = box.x / d;
-        var y = box.y / d;
+    chickMove(box, go) {
+        var x = box.x / this.d;
+        var y = box.y / this.d;
         if (box.key == 'l') {
             switch (box.angle) {
                 case 0:
@@ -250,15 +252,141 @@ class Chick {
                     if (go == 37 && !this.map.hasTile(x - 1, y, this.layer) && !this.map.hasTile(x - 2, y - 1, this.layer) && !this.map.hasTile(x - 1, y - 2, this.layer)) {
                         return true;
                     }
-                    if(go == 39 && !this.map.hasTile(x+1,y,this.layer)&&!this.map.hasTile(x+1,y-1,this.layer)&&!this.map.hasTile(x+1,y-2,this.layer)){
+                    if (go == 39 && !this.map.hasTile(x + 1, y, this.layer) && !this.map.hasTile(x + 1, y - 1, this.layer) && !this.map.hasTile(x + 1, y - 2, this.layer)) {
                         return true;
                     }
-                    if(go == 40 && !this.map.hasTile(x-1,y,this.layer)&&!this.map.hasTile(x,y+1,this.layer)){
+                    if (go == 40 && !this.map.hasTile(x - 1, y, this.layer) && !this.map.hasTile(x, y + 1, this.layer)) {
                         return true;
                     }
                     return false;
             }
         }
+    }
+
+    chickLine(box) {
+        var x = this.r / this.d;
+        var y = box.y / this.d;
+        var n = game.width / this.d - x;
+        var yArray = [];
+        if (box.key == 'l') {
+            if (box.angle === 0) {
+                if (this.ck(x, y - 1, n)) {
+                    yArray.push(y - 1);
+                }
+                if (this.ck(x, y, n)) {
+                    yArray.push(y)
+                }
+                if (this.ck(x, y + 1, n)) {
+                    yArray.push(y + 1)
+                }
+                return yArray;
+            } else if (box.angle === 90 || box.angle == -90) {
+                if (this.ck(x, y, n)) {
+                    yArray.push(y)
+                }
+                if (this.ck(x, y - 1, n)) {
+                    yArray.push(y - 1)
+                }
+                return yArray;
+            } else if (box.angle === -180) {
+                if (this.ck(x, y, n)) {
+                    yArray.push(y)
+                }
+                if (this.ck(x, y - 1, n)) {
+                    yArray.push(y - 1)
+                }
+                if (this.ck(x, y - 2, n)) {
+                    yArray.push(y - 2)
+                }
+                return yArray;
+            }
+
+        }
+        if (box.key == 'o') {
+            if (this.ck(x, y, n)) {
+                yArray.push(y);
+            }
+            if (this.ck(x, y - 1, n)) {
+                yArray.push(y - 1);
+            }
+            return yArray;
+        }
+        if (box.key == 'i') {
+            switch (box.angle) {
+                case 0:
+                    if (this.ck(x, y + 1, n)) {
+                        yArray.push(y + 1);
+                    }
+                    if (this.ck(x, y, n)) {
+                        yArray.push(y);
+                    }
+                    if (this.ck(x, y - 1, n)) {
+                        yArray.push(y - 1);
+                    }
+                    if (this.ck(x, y - 2, n)) {
+                        yArray.push(y - 2);
+                    }
+                    return yArray;
+                case 90:
+                    if(this.ck(x,y,n)){
+                        yArray.push(y);
+                    }
+                    return yArray;
+
+            }
+        }
+        if(box.key == 't'){
+            switch (box.angle){
+                case 0:
+                    if (this.ck(x, y, n)) {
+                        yArray.push(y);
+                    }
+                    if (this.ck(x, y - 1, n)) {
+                        yArray.push(y - 1);
+                    }
+                    return yArray;
+                case 90:
+                    if (this.ck(x, y + 1, n)) {
+                        yArray.push(y + 1);
+                    }
+                    if (this.ck(x, y, n)) {
+                        yArray.push(y);
+                    }
+                    if (this.ck(x, y - 1, n)) {
+                        yArray.push(y - 1);
+                    }
+                    return yArray;
+                case -90:
+                    if (this.ck(x, y, n)) {
+                        yArray.push(y);
+                    }
+                    if (this.ck(x, y - 1, n)) {
+                        yArray.push(y - 1);
+                    }
+                    if (this.ck(x, y - 2, n)) {
+                        yArray.push(y - 2);
+                    }
+                    return yArray;
+                case -180:
+                    if (this.ck(x, y, n)) {
+                        yArray.push(y);
+                    }
+                    if (this.ck(x, y - 1, n)) {
+                        yArray.push(y - 1);
+                    }
+                    return yArray;
+            }
+        }
+
+    }
+
+    ck(a, b, c) {
+        for (var i = a; i < c; i++) {
+            if (!this.map.hasTile(i, b, this.layer)) {
+                return false;
+            }
+        }
+        return true;
     }
 
 
