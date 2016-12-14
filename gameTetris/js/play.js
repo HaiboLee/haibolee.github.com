@@ -1,5 +1,5 @@
 var playState = function (game) {
-    var d = 10, r = 100;
+    var d = 10, r = 50;
     var drawMap, chick, createBox;
     var tileMap, layer1, mybox;
     var stats, cursors;
@@ -24,31 +24,41 @@ var playState = function (game) {
         layer1.scrollFactorY = 0.5;
         layer1.resizeWorld();
 
-        drawMap = new DrawMap(tileMap, layer1, d,r);
+        drawMap = new DrawMap(tileMap, layer1, d, r);
         chick = new Chick(tileMap, layer1, d, r);
         drawMap.drawGrid();
-
         drawMap.drawBound(3);
+
         tileMap.putTile(4, 50, 30, layer1);
         tileMap.fill(0, 10, 49, 77, 1, layer1);
-        mybox = createBox.createMyBox(3, x, y);
         game.input.onDown.add(function () {
             //tileMap.putTile(1,10,481,layer1);
         });
+        //玩家头像位置
+        var dd = (game.width - 2 * r) / 5;
+
+        var begindd = r + dd / 2;
+        mybox = createBox.createMyBox(3, begindd, r);
+        createBox.createUser('one', begindd, r / 2);
+        createBox.createUser('two', begindd + dd, r / 2);
+        createBox.createUser('three', begindd + 2 * dd, r / 2);
+        createBox.createUser('four', begindd + 3 * dd, r / 2);
+        createBox.createUser('five', begindd + 4 * dd, r / 2);
+
         setInterval(function () {
             if (chick.chickMove(mybox, 40)) {
                 mybox.y += 10;
             } else {
                 drawMap.drawBox(mybox);
                 chickLine = chick.chickLine(mybox);
-                //mybox = createBox.createMyBox(Math.floor(Math.random() * 4), x, y);
                 if (chickLine.length != 0) {
                     drawMap.removeLine(chickLine);
                     drawMap.downTile(chickLine);
-                    chickLine.splice(0,chickLine.length);
+                    chickLine.splice(0, chickLine.length);
                 }
-                mybox.kill();
-                mybox = createBox.createMyBox(2, x, y);
+                mybox.destroy();
+                mybox = createBox.createMyBox(Math.floor(Math.random() * 4), begindd, r);
+                //mybox = createBox.createMyBox(2, x, y);
             }
         }, 500);
 
@@ -56,9 +66,6 @@ var playState = function (game) {
         document.onkeydown = function (event) {
             var e = event || window.event || arguments.callee.caller.arguments[0];
             if (e && e.keyCode == 38) { // 按 up
-                //if (chick.chickAngle(mybox,d,tileMap,layer1)){
-                //    mybox.angle+=90;
-                //}
                 chick.chickAngle(mybox)
             }
             if (e && e.keyCode == 40) { // 按 down
@@ -83,8 +90,6 @@ var playState = function (game) {
         }
     }
     this.update = function () {
-
-
         stats.update();
     }
 
