@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>夏夏的个人相册</title>
+    <script src="asset/js/three.min.js"></script>
+    <script src="asset/js/tween.min.js"></script>
+    <script>
+        var renderer;
+        var raycaster = new THREE.Raycaster();
+        var mouse = new THREE.Vector2(),
+                offset = new THREE.Vector3(),
+                intersection = new THREE.Vector3(),
+                INTERSECTED, SELECTED;
+        var objects = [];
+        function initThree() {
+            renderer = new THREE.WebGLRenderer({antialias: true});
+            renderer.setClearColor(0xffffff);
+            renderer.setSize(window.innerWidth, window.innerHeight);
+            document.getElementById("myGame").appendChild(renderer.domElement);
+        }
+
+        var camera;
+        function initCamera() {
+            camera = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 0.1, 1000);
+            camera.position.x = 0;
+            camera.position.y = 50;
+            camera.position.z = 80;
+            camera.up.x = 0;
+            camera.up.y = 1;
+            camera.up.z = 0;
+            camera.lookAt({
+                x: 0,
+                y: 0,
+                z: 0
+            });
+        }
+
+        var scene;
+        function initScene() {
+            scene = new THREE.Scene();
+            scene.fog = new THREE.FogExp2( 0xffffff, 0.005 );
+        }
+
+
+        function initBox(x, y, z,side,url) {
+            var b1 = new THREE.ImageUtils.loadTexture(url);
+            var geometry = new THREE.BoxGeometry(side, side, side);
+            var material = new THREE.MeshPhongMaterial();
+            material.map = b1;
+            var box = new THREE.Mesh(geometry, material);
+            box.position.set(x, y, z);
+            scene.add(box);
+            objects.push(box);
+            return box;
+        }
+
+        //补间动画
+        function initTween(event, time) {
+            new TWEEN.Tween(event.rotation).to({y: 2 * Math.PI}, time).repeat(Infinity).start();
+        }
+
+        function animation() {
+            renderer.render(scene, camera);
+            renderer.domElement.addEventListener('mousedown', onDocumentMouseDown, false);
+            requestAnimationFrame(animation);
+            TWEEN.update();
+        }
+
+        function onDocumentMouseDown(event) {
+            mouse.x = ( event.clientX / window.innerWidth ) * 2 - 1;
+            mouse.y = -( event.clientY / window.innerHeight ) * 2 + 1;
+            var vector = new THREE.Vector3(mouse.x, mouse.y, 0.5).unproject(camera);
+            var raycaster = new THREE.Raycaster(camera.position, vector.sub(camera.position).normalize());
+            var intersects = raycaster.intersectObjects(objects);
+            if (intersects.length > 0) {
+                SELECTED = intersects[0].object;
+                console.log(SELECTED)
+                moveCamera(SELECTED.position.x, SELECTED.position.y, SELECTED.position.z);
+            }else{
+                moveCamera(0,50,80);
+            }
+        }
+
+        function moveCamera(x, y, z) {
+            new TWEEN.Tween(camera.position).to({
+                x: x,
+                y: y + 25,
+                z: z + 45
+            },3000).easing(TWEEN.Easing.Elastic.Out).start();
+        }
+
+        function initLight() {
+            var light = new THREE.AmbientLight(0xffffff);
+            scene.add(light);
+
+            var spotLight  = new THREE.SpotLight(0x0000ff,0.3);
+            spotLight.position.set(-200,150,-50);
+            scene.add(spotLight)
+        }
+
+        function initPhoto() {
+            initTween(initBox(10, -5, -10,15,'asset/img/juju.png'), 7000);
+            initTween(initBox(0, 0, -40,15,'asset/img/juju4.png'), 7000);
+            initTween(initBox(20, 5, -80,15,'asset/img/juju2.png'), 7000);
+            initTween(initBox(-25, -50, -110,15,'asset/img/juju3.png'), 8000);
+            initTween(initBox(-30, -60, -90,15,'asset/img/juju8.png'), 8000);
+            initTween(initBox(0, -30, -10,15,'asset/img/juju5.png'), 9000);
+            initTween(initBox(-20, 5, -50,15,'asset/img/juju6.png'), 8000);
+            initTween(initBox(-50, -50, -150,15,'asset/img/juju7.png'), 8000);
+            initTween(initBox(30, -70, -200,15,'asset/img/juju9.png'), 8000);
+            initTween(initBox(-50, -180, -220,15,'asset/img/juju10.png'), 8000);
+        }
+
+        function startThree() {
+            initThree();
+            initScene();
+            initCamera();
+            initPhoto();
+            initLight();
+            animation();
+
+        }
+
+    </script>
+</head>
+<body onload="startThree()">
+<div id="myGame"></div>
+</body>
+</html>
